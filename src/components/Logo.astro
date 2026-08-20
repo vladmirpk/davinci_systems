@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/davinci-logo.jpeg';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  stacked?: boolean;
+}
+
+const { stacked = false } = Astro.props;
+---
+<a href={withBase('/')} class="inline-flex shrink-0 items-center" aria-label="Davinci Systems home">
+  <Image
+    src={logo}
+    alt="Davinci Systems"
+    class:list={[stacked ? 'h-24 w-auto md:h-28' : 'h-[72px] w-auto sm:h-[88px] lg:h-[96px]', 'object-contain']}
+    widths={[240, 360, 480, 640]}
+    sizes="(min-width: 1024px) 280px, 200px"
+  />
+</a>

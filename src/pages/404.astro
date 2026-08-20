@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import PageBanner from '../components/PageBanner.astro';
+---
+<BaseLayout title="Page not found" description="The page you requested is not on the Davinci Systems website.">
+  <PageBanner eyebrow="404" title="This page does not exist." text="The link may be out of date. Try the home page, or contact us if you were expecting something specific.">
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button href="/" variant="gold">Back home</Button>
+      <Button href="/contact/" variant="ghost-light">Contact</Button>
+    </div>
+  </PageBanner>
+</BaseLayout>

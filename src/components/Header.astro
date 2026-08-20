@@ -1,0 +1,124 @@
+---
+import { nav, site } from '../data/site';
+import { withBase } from '../lib/paths';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+
+function isActive(href: string) {
+  const clean = href.replace(/\/+$/, '') || '/';
+  if (clean === '/') return path === '/' || path === '';
+  return path === clean || path.startsWith(`${clean}/`);
+}
+---
+<header
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-transparent bg-white/90 backdrop-blur-md transition-[box-shadow,border-color] duration-300"
+>
+  <div class="container-site flex h-[104px] items-center justify-between gap-4 sm:h-[112px]">
+    <Logo />
+
+    <nav class="hidden items-center gap-0.5 lg:flex" aria-label="Primary">
+      {
+        nav.map((item) => (
+          <div class="group relative">
+            <a
+              href={withBase(item.href)}
+              class:list={[
+                'flex items-center gap-1 px-3 py-2 text-[13px] font-medium transition-colors',
+                isActive(item.href) ? 'text-navy' : 'text-muted hover:text-navy',
+              ]}
+            >
+              {item.label}
+              {item.children && <Icon name="chevron" class="h-3.5 w-3.5 opacity-60" />}
+            </a>
+            {item.children && (
+              <div class="invisible absolute left-0 top-full z-20 min-w-56 translate-y-1 rounded-lg border border-line bg-white py-2 opacity-0 shadow-xl shadow-navy/10 transition group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                {item.children.map((child) => (
+                  <a
+                    href={withBase(child.href)}
+                    class="block px-4 py-2 text-[13px] text-muted hover:bg-mist hover:text-navy"
+                  >
+                    {child.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <Button href="/contact/" variant="gold" class="hidden sm:inline-flex">Get a Quote</Button>
+      <button
+        id="menu-toggle"
+        class="grid h-10 w-10 place-items-center rounded-md border border-line text-navy lg:hidden"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        aria-label="Open menu"
+      >
+        <Icon name="menu" class="h-5 w-5" />
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-nav" class="hidden border-t border-line bg-white lg:hidden" hidden>
+    <nav class="container-site flex flex-col py-4" aria-label="Mobile">
+      {
+        nav.map((item) => (
+          <div class="border-b border-line/70 py-2">
+            <a href={withBase(item.href)} class="block py-1 text-sm font-semibold text-navy">
+              {item.label}
+            </a>
+            {item.children && (
+              <div class="mt-1 flex flex-col">
+                {item.children.map((child) => (
+                  <a href={withBase(child.href)} class="py-1 pl-3 text-sm text-muted">
+                    {child.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      }
+      <Button href="/contact/" variant="gold" class="mt-4">Get a Quote</Button>
+      <p class="mt-4 text-xs text-muted">{site.email}</p>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header');
+  const toggle = document.getElementById('menu-toggle');
+  const panel = document.getElementById('mobile-nav');
+
+  const onScroll = () => {
+    if (!header) return;
+    const scrolled = window.scrollY > 8;
+    header.classList.toggle('shadow-sm', scrolled);
+    header.classList.toggle('border-line', scrolled);
+    header.classList.toggle('border-transparent', !scrolled);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  toggle?.addEventListener('click', () => {
+    const open = panel?.hasAttribute('hidden') === false;
+    if (open) {
+      panel?.setAttribute('hidden', '');
+      panel?.classList.add('hidden');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+    } else {
+      panel?.removeAttribute('hidden');
+      panel?.classList.remove('hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+    }
+  });
+</script>

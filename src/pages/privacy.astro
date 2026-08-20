@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageBanner from '../components/PageBanner.astro';
+import { site } from '../data/site';
+---
+<BaseLayout
+  title="Privacy Policy"
+  description="How Davinci Systems collects, uses and protects information submitted through this website."
+>
+  <PageBanner eyebrow="Legal" title="Privacy Policy" text={`Last updated ${new Date().getFullYear()}.`} />
+  <section class="container-site max-w-3xl py-14 text-[15px] leading-relaxed text-muted space-y-6">
+    <p>
+      {site.name} (“we”, “us”) respects your privacy. This policy describes how we handle information collected through this website.
+    </p>
+    <h2 class="text-xl font-semibold text-navy">Information we collect</h2>
+    <p>
+      If you send a quote request or email, we receive the details you provide — typically name, email, organisation and message. Server logs may include IP address, browser type and pages visited.
+    </p>
+    <h2 class="text-xl font-semibold text-navy">How we use it</h2>
+    <p>
+      We use contact details to respond to enquiries and, where relevant, to discuss a potential engagement. We do not sell personal information.
+    </p>
+    <h2 class="text-xl font-semibold text-navy">Storage and retention</h2>
+    <p>
+      Enquiry records are kept for as long as needed to handle the conversation and meet legitimate business or legal requirements, then deleted or archived according to our internal process.
+    </p>
+    <h2 class="text-xl font-semibold text-navy">Cookies and analytics</h2>
+    <p>
+      This static site does not set advertising cookies. If we add analytics later, we will update this page and, where required, obtain consent.
+    </p>
+    <h2 class="text-xl font-semibold text-navy">Your rights</h2>
+    <p>
+      You may request access to, correction of, or deletion of personal information we hold about you, subject to applicable law. Contact {site.email}.
+    </p>
+    <h2 class="text-xl font-semibold text-navy">Contact</h2>
+    <p>
+      {site.name}, {site.address}. {site.email}.
+    </p>
+  </section>
+</BaseLayout>

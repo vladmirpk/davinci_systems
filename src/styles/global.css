@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --color-navy: #12263f;
+  --color-navy-deep: #0b1a2e;
+  --color-navy-mid: #1b3558;
+  --color-gold: #c9a227;
+  --color-gold-soft: #d4b84a;
+  --color-cyan: #2ee0e8;
+  --color-ink: #1a2433;
+  --color-muted: #5d6b7a;
+  --color-line: #e5e8ee;
+  --color-mist: #f4f6f9;
+  --color-paper: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-gold) 35%, white);
+  color: var(--color-navy-deep);
+}
+
+.container-site {
+  width: min(1160px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .container-site {
+    width: min(1160px, calc(100% - 3rem));
+  }
+}
+
+.circuit-grid {
+  background-image:
+    linear-gradient(rgba(46, 224, 232, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 224, 232, 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at 70% 40%, black 20%, transparent 72%);
+  animation: circuit-shift 28s linear infinite;
+}
+
+@keyframes circuit-shift {
+  from { background-position: 0 0; }
+  to { background-position: 56px 56px; }
+}
+
+.hex-clip {
+  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+}
+
+.hero-kenburns {
+  animation: kenburns 18s ease-in-out infinite alternate;
+}
+
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+.hero-slide {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  transition: opacity 700ms ease;
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+}
+
+.hero-slide.is-active .hero-copy {
+  animation: hero-rise 700ms ease both;
+}
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-progress {
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+.hero-progress.is-running {
+  animation: hero-progress-run 7s linear forwards;
+}
+
+@keyframes hero-progress-run {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.is-in,
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.reveal-left.is-in,
+.reveal-right.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+
+.stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+.stagger > .reveal:nth-child(2) { transition-delay: 80ms; }
+.stagger > .reveal:nth-child(3) { transition-delay: 160ms; }
+.stagger > .reveal:nth-child(4) { transition-delay: 240ms; }
+.stagger > .reveal:nth-child(5) { transition-delay: 320ms; }
+.stagger > .reveal:nth-child(6) { transition-delay: 400ms; }
+.stagger > .reveal:nth-child(7) { transition-delay: 480ms; }
+.stagger > .reveal:nth-child(8) { transition-delay: 560ms; }
+
+.journey-line {
+  background: linear-gradient(90deg, var(--color-gold), var(--color-cyan));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circuit-grid,
+  .hero-kenburns,
+  .hero-progress.is-running,
+  .hero-slide.is-active .hero-copy,
+  .reveal,
+  .reveal-left,
+  .reveal-right {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-slide {
+    transition: none;
+  }
+}

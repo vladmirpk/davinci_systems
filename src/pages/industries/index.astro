@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import VisualCard from '../../components/VisualCard.astro';
+import { industries } from '../../data/site';
+import { industryStories } from '../../data/stories';
+import { photos, industryPhotos } from '../../lib/photos';
+---
+<BaseLayout
+  title="Industries"
+  description="Davinci Systems serves education, retail, professional services, government, mining, agriculture and enterprise organisations."
+>
+  <PageBanner
+    eyebrow="Industries"
+    title="Technology solutions for every industry."
+    text="The domain changes. The requirement does not: software that fits operations, with a path you can see from first record to a system the team can run."
+    image={photos.gis}
+  />
+  <section class="py-16 md:py-20" data-reveal>
+    <div class="container-site stagger grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        industries.map((item) => (
+          <VisualCard
+            href={`/industries/${item.slug}/`}
+            title={item.title}
+            summary={item.summary}
+            image={photos[industryPhotos[item.slug] ?? 'about']}
+            process={industryStories[item.slug]?.journey.map((s) => s.title).join(' → ')}
+          />
+        ))
+      }
+    </div>
+  </section>
+  <CtaBanner title="Serving your sector starts with a conversation." />
+</BaseLayout>

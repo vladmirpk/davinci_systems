@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro';
+import { withBase } from '../lib/paths';
+
+interface Props {
+  icon: string;
+  title: string;
+  summary: string;
+  href: string;
+}
+
+const { icon, title, summary, href } = Astro.props;
+---
+<a
+  href={withBase(href)}
+  class="group flex h-full flex-col rounded-xl border border-line bg-white p-6 shadow-[0_8px_24px_rgba(18,38,63,0.04)] transition duration-200 hover:-translate-y-0.5 hover:border-gold/40 hover:shadow-[0_12px_32px_rgba(18,38,63,0.08)]"
+>
+  <span class="grid h-11 w-11 place-items-center rounded-lg bg-mist text-navy">
+    <Icon name={icon as any} class="h-5 w-5" />
+  </span>
+  <h3 class="mt-5 text-base font-semibold text-navy">{title}</h3>
+  <p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{summary}</p>
+  <span class="mt-5 ml-auto grid h-8 w-8 place-items-center rounded-full text-gold transition group-hover:bg-gold/10">
+    <Icon name="arrow" class="h-4 w-4" />
+  </span>
+</a>

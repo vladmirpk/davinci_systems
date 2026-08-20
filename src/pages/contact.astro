@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import PageBanner from '../components/PageBanner.astro';
+import { site } from '../data/site';
+import { photos } from '../lib/photos';
+---
+<BaseLayout
+  title="Contact"
+  description="Contact Davinci Systems in Harare — request a quote, talk to an expert, or start an Odoo and digital systems conversation."
+>
+  <PageBanner
+    eyebrow="Contact"
+    title="Talk to an expert."
+    text="Tell us how the work happens today. We will come back with a clear view of scope, approach and next steps."
+    image={photos.about}
+  />
+
+  <section class="py-16" data-reveal>
+    <div class="container-site grid gap-12 lg:grid-cols-12">
+      <form id="contact-form" class="space-y-5 lg:col-span-7" novalidate>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <label class="block text-sm font-medium text-navy">
+            Full name
+            <input name="name" required class="mt-1.5 w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none ring-gold/30 focus:ring-2" />
+          </label>
+          <label class="block text-sm font-medium text-navy">
+            Email
+            <input name="email" type="email" required class="mt-1.5 w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none ring-gold/30 focus:ring-2" />
+          </label>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <label class="block text-sm font-medium text-navy">
+            Organisation
+            <input name="organisation" class="mt-1.5 w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none ring-gold/30 focus:ring-2" />
+          </label>
+          <label class="block text-sm font-medium text-navy">
+            Interest
+            <select name="interest" class="mt-1.5 w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none ring-gold/30 focus:ring-2">
+              <option>Odoo ERP</option>
+              <option>School ERP</option>
+              <option>eCommerce</option>
+              <option>Custom application</option>
+              <option>Automation / AI</option>
+              <option>Other</option>
+            </select>
+          </label>
+        </div>
+        <label class="block text-sm font-medium text-navy">
+          How can we help?
+          <textarea name="message" required rows="6" class="mt-1.5 w-full rounded-md border border-line px-3 py-2.5 text-sm outline-none ring-gold/30 focus:ring-2"></textarea>
+        </label>
+        <p id="form-error" class="hidden text-sm text-red-600" role="alert"></p>
+        <p id="form-success" class="hidden rounded-md bg-mist px-4 py-3 text-sm text-navy" role="status"></p>
+        <button type="submit" class="rounded-md bg-gold px-5 py-2.5 text-sm font-semibold text-navy hover:bg-gold-soft">
+          Send message
+        </button>
+      </form>
+
+      <aside class="lg:col-span-5">
+        <div class="rounded-2xl border border-line p-6">
+          <h2 class="text-lg font-semibold text-navy">Office</h2>
+          <ul class="mt-5 space-y-4 text-sm text-muted">
+            <li class="flex gap-3">
+              <Icon name="phone" class="h-5 w-5 text-gold" />
+              <a href={site.phoneHref} class="hover:text-navy">{site.phone}</a>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="mail" class="h-5 w-5 text-gold" />
+              <a href={`mailto:${site.email}`} class="hover:text-navy">{site.email}</a>
+            </li>
+            <li class="flex gap-3">
+              <Icon name="pin" class="h-5 w-5 text-gold" />
+              <span>{site.address}<br />{site.hours}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="mt-6 overflow-hidden rounded-2xl border border-line">
+          <iframe
+            title="Harare, Zimbabwe"
+            class="h-64 w-full"
+            loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=30.95,-17.90,31.15,-17.72&layer=mapnik&marker=-17.8252,31.0335"
+          ></iframe>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const errorEl = document.getElementById('form-error');
+  const successEl = document.getElementById('form-success');
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    errorEl?.classList.add('hidden');
+    successEl?.classList.add('hidden');
+
+    const data = new FormData(form);
+    const name = String(data.get('name') || '').trim();
+    const email = String(data.get('email') || '').trim();
+    const organisation = String(data.get('organisation') || '').trim();
+    const interest = String(data.get('interest') || '').trim();
+    const message = String(data.get('message') || '').trim();
+
+    if (!name || !email || !message) {
+      if (errorEl) {
+        errorEl.textContent = 'Please complete name, email and message.';
+        errorEl.classList.remove('hidden');
+      }
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      if (errorEl) {
+        errorEl.textContent = 'Please enter a valid email address.';
+        errorEl.classList.remove('hidden');
+      }
+      return;
+    }
+
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Organisation: ${organisation || '—'}`,
+      `Interest: ${interest}`,
+      '',
+      message,
+    ].join('\n');
+
+    const mailto = `mailto:hello@davincisystems.co.zw?subject=${encodeURIComponent('Quote request — ' + interest)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+
+    if (successEl) {
+      successEl.textContent = 'Your email client should open with the message. If it does not, write to hello@davincisystems.co.zw.';
+      successEl.classList.remove('hidden');
+    }
+    form.reset();
+  });
+</script>

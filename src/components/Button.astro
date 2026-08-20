@@ -1,0 +1,34 @@
+---
+import { withBase } from '../lib/paths';
+
+interface Props {
+  href: string;
+  variant?: 'primary' | 'gold' | 'ghost' | 'navy-outline' | 'ghost-light';
+  class?: string;
+}
+
+const { href, variant = 'primary', class: className = '' } = Astro.props;
+
+const styles: Record<string, string> = {
+  primary:
+    'bg-navy text-white hover:bg-navy-mid shadow-sm',
+  gold:
+    'bg-gold text-navy hover:bg-gold-soft shadow-sm',
+  ghost:
+    'bg-white text-navy border border-navy/15 hover:border-navy/40',
+  'navy-outline':
+    'bg-transparent text-navy border border-navy/20 hover:border-navy hover:bg-navy hover:text-white',
+  'ghost-light':
+    'bg-transparent text-white border border-white/30 hover:border-cyan hover:text-cyan',
+};
+---
+<a
+  href={withBase(href)}
+  class:list={[
+    'inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold tracking-wide transition-colors duration-200',
+    styles[variant],
+    className,
+  ]}
+>
+  <slot />
+</a>

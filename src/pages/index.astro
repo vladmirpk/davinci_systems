@@ -1,0 +1,206 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import HeroCarousel from '../components/HeroCarousel.astro';
+import Icon from '../components/Icon.astro';
+import JourneyFlow from '../components/JourneyFlow.astro';
+import VisualCard from '../components/VisualCard.astro';
+import WaveDivider from '../components/WaveDivider.astro';
+import {
+  caseStudies,
+  clients,
+  odooModules,
+  odooServices,
+  processSteps,
+  site,
+  solutions,
+  industries,
+  tech,
+} from '../data/site';
+import { photos, solutionPhotos, industryPhotos, casePhotos } from '../lib/photos';
+import { withBase } from '../lib/paths';
+
+const homeSolutions = solutions;
+---
+<BaseLayout title={site.name} description={site.description}>
+  <HeroCarousel />
+  <WaveDivider from="navy" to="mist" />
+
+  <section class="bg-mist py-16 md:py-20" data-reveal>
+    <div class="container-site">
+      <p class="text-xs font-semibold tracking-[0.22em] text-gold uppercase">What we build</p>
+      <h2 class="mt-3 max-w-2xl text-3xl font-semibold tracking-tight text-navy md:text-4xl">
+        Digital systems for real-world organisations.
+      </h2>
+      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
+        Each card is a full operating path. Open it to see the screens, the stages, and how work runs from the first request to a system your team can own.
+      </p>
+      <div class="stagger mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          homeSolutions.map((item) => (
+            <VisualCard
+              href={`/solutions/${item.slug}/`}
+              title={item.title}
+              summary={item.summary}
+              image={photos[solutionPhotos[item.slug] ?? 'odoo']}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <WaveDivider from="mist" to="white" />
+
+  <section class="py-16 md:py-20" data-reveal>
+    <div class="container-site grid items-center gap-12 lg:grid-cols-2">
+      <div class="reveal-left">
+        <p class="text-4xl font-semibold tracking-tight text-[#714B67]">odoo</p>
+        <h2 class="mt-4 text-3xl font-semibold tracking-tight text-navy md:text-4xl">
+          Odoo delivery from implementation to support.
+        </h2>
+        <p class="mt-4 text-[15px] leading-relaxed text-muted">
+          Accounting, sales, inventory, HR and CRM on one platform — configured, extended and trained so the system is used, not merely installed.
+        </p>
+        <Button href="/odoo-services/" variant="primary" class="mt-7">Explore Odoo Services</Button>
+      </div>
+      <div class="reveal-right overflow-hidden rounded-2xl border border-line shadow-[0_24px_50px_rgba(18,38,63,0.14)]">
+        <Image
+          src={photos.odoo}
+          alt="Odoo ERP apps and dashboards"
+          class="w-full object-cover"
+          widths={[640, 960]}
+          sizes="(min-width: 1024px) 540px, 100vw"
+        />
+      </div>
+    </div>
+    <div class="container-site stagger mt-14 grid gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      {
+        odooServices.map((step) => (
+          <div class="reveal rounded-xl border border-line bg-white p-4 text-center">
+            <span class="mx-auto grid h-10 w-10 place-items-center rounded-full bg-mist text-navy">
+              <Icon name={step.icon} class="h-5 w-5" />
+            </span>
+            <p class="mt-3 text-sm font-semibold text-navy">{step.title.split(' ')[0]}</p>
+          </div>
+        ))
+      }
+    </div>
+    <ul class="container-site mt-8 grid grid-cols-2 gap-x-8 gap-y-3 sm:grid-cols-4">
+      {
+        odooModules.map((mod) => (
+          <li class="flex items-center gap-2.5 text-sm text-navy">
+            <Icon name={mod.icon} class="h-4 w-4 text-gold" />
+            {mod.label}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <WaveDivider from="white" to="mist" />
+
+  <section class="bg-mist py-16 md:py-20" data-reveal>
+    <div class="container-site">
+      <p class="text-xs font-semibold tracking-[0.22em] text-gold uppercase">Systems we build</p>
+      <h2 class="mt-3 text-3xl font-semibold tracking-tight text-navy md:text-4xl">Proven solutions. Real impact.</h2>
+      <div class="stagger mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          caseStudies.map((study) => (
+            <a
+              href={withBase(`/work/#${study.slug}`)}
+              class="reveal group overflow-hidden rounded-xl border border-line bg-white shadow-[0_8px_24px_rgba(18,38,63,0.04)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(18,38,63,0.1)]"
+            >
+              <Image
+                src={photos[casePhotos[study.image] ?? 'caseSchool']}
+                alt={study.title}
+                class="h-44 w-full object-cover transition duration-700 group-hover:scale-105"
+                widths={[400, 640]}
+                sizes="(min-width: 1024px) 260px, 50vw"
+              />
+              <div class="p-5">
+                <h3 class="text-base font-semibold text-navy">{study.title}</h3>
+                <p class="mt-2 text-xs tracking-wide text-gold">{study.process}</p>
+                <p class="mt-2 text-sm text-muted">{study.summary}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <JourneyFlow eyebrow="Our process" title="From idea to impact." steps={processSteps.map((s) => ({ n: s.n, title: s.title, text: s.text }))} />
+
+  <WaveDivider from="mist" to="white" />
+
+  <section class="py-16 md:py-20" data-reveal>
+    <div class="container-site">
+      <p class="text-xs font-semibold tracking-[0.22em] text-gold uppercase">Industries we serve</p>
+      <h2 class="mt-3 text-3xl font-semibold tracking-tight text-navy md:text-4xl">
+        Technology solutions for every industry.
+      </h2>
+      <div class="stagger mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          industries.map((item) => (
+            <a
+              href={withBase(`/industries/${item.slug}/`)}
+              class="reveal group overflow-hidden rounded-xl border border-line bg-white transition hover:border-gold/40"
+            >
+              <Image
+                src={photos[industryPhotos[item.slug] ?? 'about']}
+                alt={item.title}
+                class="h-32 w-full object-cover transition duration-700 group-hover:scale-105"
+                widths={[400, 640]}
+                sizes="(min-width: 1024px) 260px, 50vw"
+              />
+              <div class="p-5">
+                <h3 class="font-semibold text-navy">{item.title}</h3>
+                <p class="mt-2 text-sm text-muted">{item.summary}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-line py-16" data-reveal>
+    <div class="container-site">
+      <p class="text-center text-xs font-semibold tracking-[0.22em] text-gold uppercase">Technology we use</p>
+      <ul class="mt-8 flex flex-wrap items-center justify-center gap-3">
+        {
+          tech.map((item) => (
+            <li class="rounded-full border border-line px-4 py-2 text-sm font-medium text-navy">{item}</li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBanner title="Ready to build your digital future?" />
+
+  {
+    site.showTrustedBy && (
+      <section class="border-t border-line py-14">
+        <div class="container-site">
+          <p class="text-center text-xs font-semibold tracking-[0.2em] text-muted uppercase">
+            Trusted by organisations that choose to build better.
+          </p>
+          <ul class="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+            {clients.map((client) => (
+              <li class="flex items-center justify-center gap-2 text-navy/45">
+                <span class="grid h-8 w-8 place-items-center rounded-full border border-current text-xs font-semibold">
+                  {client.mark}
+                </span>
+                <span class="text-sm font-semibold tracking-wide">{client.name}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

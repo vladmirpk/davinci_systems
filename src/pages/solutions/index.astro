@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import VisualCard from '../../components/VisualCard.astro';
+import WaveDivider from '../../components/WaveDivider.astro';
+import { solutions } from '../../data/site';
+import { serviceStories } from '../../data/stories';
+import { photos, solutionPhotos } from '../../lib/photos';
+
+const featured = solutions;
+---
+<BaseLayout
+  title="Solutions"
+  description="Odoo ERP, school systems, eCommerce, custom applications, automation, AI and GIS — digital solutions from Davinci Systems."
+>
+  <PageBanner
+    eyebrow="Solutions"
+    title="Digital systems built around the work."
+    text="Each service is a full operating path — not a brochure module. Open a card to see the journey, the screens, and what go-live actually includes."
+    image={photos.odoo}
+  />
+
+  <section class="py-16 md:py-20" data-reveal>
+    <div class="container-site stagger grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        featured.map((item) => (
+          <VisualCard
+            href={`/solutions/${item.slug}/`}
+            title={item.title}
+            summary={item.summary}
+            image={photos[solutionPhotos[item.slug] ?? 'odoo']}
+            process={serviceStories[item.slug]?.journey.map((s) => s.title).slice(0, 4).join(' → ')}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <WaveDivider from="white" to="navy" />
+  <CtaBanner title="Not sure which solution you need?" text="Describe the problem. We will recommend a path — Odoo, custom, or a blend." />
+</BaseLayout>

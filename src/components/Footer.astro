@@ -1,0 +1,95 @@
+---
+import { nav, site } from '../data/site';
+import { withBase } from '../lib/paths';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+
+const footerCols = [
+  {
+    title: 'Solutions',
+    links: nav.find((n) => n.label === 'Solutions')?.children ?? [],
+  },
+  {
+    title: 'Odoo Services',
+    links: nav.find((n) => n.label === 'Odoo Services')?.children ?? [],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About Us', href: '/about/' },
+      { label: 'Our Work', href: '/work/' },
+      { label: 'Industries', href: '/industries/' },
+      { label: 'Resources', href: '/resources/' },
+      { label: 'Contact', href: '/contact/' },
+    ],
+  },
+];
+---
+<footer class="border-t border-line bg-white">
+  <div class="container-site grid gap-12 py-16 md:grid-cols-12">
+    <div class="md:col-span-4">
+      <Logo stacked />
+      <p class="mt-5 max-w-sm text-sm leading-relaxed text-muted">
+        We design and build software that works the way organisations work — ERP, automation and intelligent systems for teams that need reliability.
+      </p>
+      <div class="mt-6 flex gap-3">
+        <a href={site.social.linkedin} class="grid h-9 w-9 place-items-center rounded-full border border-line text-navy hover:border-gold hover:text-gold" aria-label="LinkedIn">
+          <Icon name="linkedin" class="h-4 w-4" />
+        </a>
+        <a href={site.social.facebook} class="grid h-9 w-9 place-items-center rounded-full border border-line text-navy hover:border-gold hover:text-gold" aria-label="Facebook">
+          <Icon name="facebook" class="h-4 w-4" />
+        </a>
+        <a href={site.social.twitter} class="grid h-9 w-9 place-items-center rounded-full border border-line text-navy hover:border-gold hover:text-gold" aria-label="X">
+          <Icon name="twitter" class="h-4 w-4" />
+        </a>
+        <a href={site.social.youtube} class="grid h-9 w-9 place-items-center rounded-full border border-line text-navy hover:border-gold hover:text-gold" aria-label="YouTube">
+          <Icon name="youtube" class="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+
+    {
+      footerCols.map((col) => (
+        <div class="md:col-span-2">
+          <h3 class="text-xs font-semibold tracking-[0.16em] text-navy uppercase">{col.title}</h3>
+          <ul class="mt-4 space-y-2.5">
+            {col.links.map((link) => (
+              <li>
+                <a href={withBase(link.href)} class="text-sm text-muted hover:text-navy">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+
+    <div class="md:col-span-2">
+      <h3 class="text-xs font-semibold tracking-[0.16em] text-navy uppercase">Contact Us</h3>
+      <ul class="mt-4 space-y-3 text-sm text-muted">
+        <li>
+          <a href={site.phoneHref} class="hover:text-navy">{site.phone}</a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`} class="hover:text-navy">{site.email}</a>
+        </li>
+        <li>{site.address}</li>
+      </ul>
+      <Button href="/contact/" variant="primary" class="mt-6 w-full">Talk to an Expert</Button>
+    </div>
+  </div>
+
+  <div class="border-t border-line">
+    <div class="container-site flex flex-col gap-3 py-5 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {site.name}. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a href={withBase('/privacy/')} class="hover:text-navy">Privacy Policy</a>
+        <a href={withBase('/terms/')} class="hover:text-navy">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+</footer>

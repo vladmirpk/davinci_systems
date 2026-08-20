@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Icon from '../components/Icon.astro';
+import JourneyFlow from '../components/JourneyFlow.astro';
+import PageBanner from '../components/PageBanner.astro';
+import WaveDivider from '../components/WaveDivider.astro';
+import { odooModules, odooServices } from '../data/site';
+import { photos } from '../lib/photos';
+
+const odooJourney = odooServices.map((item, i) => ({
+  n: String(i + 1).padStart(2, '0'),
+  title: item.title.split(' ')[0],
+  text: item.text,
+}));
+---
+<BaseLayout
+  title="Odoo Services"
+  description="Odoo implementation, custom modules, configuration, integrations, automation, school ERP extensions, support and training from Davinci Systems."
+>
+  <PageBanner
+    eyebrow="Odoo services"
+    title="Odoo that matches how your organisation actually runs."
+    text="Implementation, configuration, custom modules, integrations and support — so the system is used, not merely installed."
+    image={photos.odoo}
+  />
+
+  <section class="py-16 md:py-20" data-reveal>
+    <div class="container-site grid items-center gap-12 lg:grid-cols-2">
+      <div>
+        <p class="text-4xl font-semibold text-[#714B67]">odoo</p>
+        <h2 class="mt-4 text-3xl font-semibold text-navy">From first module to a team that owns it.</h2>
+        <p class="mt-4 text-[15px] leading-relaxed text-muted">
+          Odoo covers accounting, sales, inventory, manufacturing, HR, CRM, eCommerce and projects. We make it fit — right modules first, clean configuration, extensions only where they earn their keep.
+        </p>
+        <Button href="/contact/" variant="primary" class="mt-6">Plan an Odoo rollout</Button>
+      </div>
+      <div class="overflow-hidden rounded-2xl border border-line shadow-[0_20px_50px_rgba(18,38,63,0.12)]">
+        <Image
+          src={photos.odoo}
+          alt="Odoo ERP dashboard and app launcher"
+          class="w-full object-cover"
+          widths={[720, 1080]}
+          sizes="(min-width: 1024px) 540px, 100vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  <WaveDivider from="white" to="mist" />
+  <JourneyFlow eyebrow="The Odoo path" title="Implementation through support — in sequence." steps={odooJourney} />
+  <WaveDivider from="mist" to="white" />
+
+  <section class="py-16 md:py-20" data-reveal>
+    <div class="container-site grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        odooServices.map((item) => (
+          <article id={item.id} class="scroll-mt-28 rounded-xl border border-line bg-white p-6">
+            <span class="grid h-10 w-10 place-items-center rounded-lg bg-mist text-navy">
+              <Icon name={item.icon} class="h-5 w-5" />
+            </span>
+            <h2 class="mt-4 text-lg font-semibold text-navy">{item.title}</h2>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-line bg-mist py-16" data-reveal>
+    <div class="container-site">
+      <h2 class="text-3xl font-semibold text-navy">Core modules we implement</h2>
+      <ul class="stagger mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {
+          odooModules.map((mod) => (
+            <li class="reveal flex items-center gap-3 rounded-xl border border-line bg-white p-4 text-navy">
+              <Icon name={mod.icon} class="h-5 w-5 text-gold" />
+              <span class="text-sm font-medium">{mod.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBanner title="Ready for an Odoo conversation?" />
+</BaseLayout>

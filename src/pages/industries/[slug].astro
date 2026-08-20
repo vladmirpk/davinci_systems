@@ -1,0 +1,79 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import CtaBanner from '../../components/CtaBanner.astro';
+import JourneyFlow from '../../components/JourneyFlow.astro';
+import PageBanner from '../../components/PageBanner.astro';
+import WaveDivider from '../../components/WaveDivider.astro';
+import { industries, solutions } from '../../data/site';
+import { industryStories } from '../../data/stories';
+import { photos, industryPhotos, solutionPhotos } from '../../lib/photos';
+import { withBase } from '../../lib/paths';
+
+export function getStaticPaths() {
+  return industries.map((item) => ({ params: { slug: item.slug } }));
+}
+
+const { slug } = Astro.params;
+const item = industries.find((s) => s.slug === slug);
+if (!item) throw new Error('Industry not found');
+const story = industryStories[item.slug];
+const photo = photos[industryPhotos[item.slug] ?? 'about'];
+const related = (story?.related ?? [])
+  .map((id) => solutions.find((s) => s.slug === id))
+  .filter((sol): sol is (typeof solutions)[number] => Boolean(sol));
+---
+<BaseLayout title={item.title} description={item.summary}>
+  <PageBanner eyebrow="Industries" title={item.title} text={item.summary} image={photo} />
+
+  <section class="py-16 md:py-20" data-reveal>
+    <div class="container-site grid items-center gap-12 lg:grid-cols-2">
+      <div>
+        <p class="text-xs font-semibold tracking-[0.22em] text-gold uppercase">How work runs here</p>
+        <h2 class="mt-3 text-3xl font-semibold text-navy">End to end for {item.title.toLowerCase()}.</h2>
+        <p class="mt-4 text-[15px] leading-relaxed text-muted">{item.description}</p>
+        <Button href="/contact/" variant="gold" class="mt-8">Discuss a {item.title} project</Button>
+      </div>
+      <div class="overflow-hidden rounded-2xl border border-line shadow-[0_20px_50px_rgba(18,38,63,0.12)]">
+        <Image src={photo} alt={item.title} class="aspect-[16/10] w-full object-cover" widths={[800, 1200]} sizes="(min-width: 1024px) 540px, 100vw" />
+      </div>
+    </div>
+  </section>
+
+  {story && (
+    <>
+      <WaveDivider from="white" to="mist" />
+      <JourneyFlow eyebrow="Operating path" title={`From first record to a runable ${item.title.toLowerCase()} system.`} steps={story.journey} />
+    </>
+  )}
+
+  <section class="py-16 md:py-20" data-reveal>
+    <div class="container-site">
+      <h2 class="text-2xl font-semibold text-navy">Solutions we typically pair</h2>
+      <ul class="mt-8 grid gap-6 sm:grid-cols-2">
+        {
+          related.map((sol) => (
+            <li>
+              <a href={withBase(`/solutions/${sol.slug}/`)} class="flex gap-4 overflow-hidden rounded-xl border border-line bg-white hover:border-gold/40">
+                <Image
+                  src={photos[solutionPhotos[sol.slug] ?? 'odoo']}
+                  alt={sol.title}
+                  class="h-28 w-36 shrink-0 object-cover"
+                  widths={[240, 360]}
+                  sizes="144px"
+                />
+                <span class="py-4 pr-4">
+                  <span class="block font-semibold text-navy">{sol.title}</span>
+                  <span class="mt-1 block text-sm text-muted">{sol.summary}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBanner title={`Build for ${item.title} with a team that knows the constraints.`} />
+</BaseLayout>

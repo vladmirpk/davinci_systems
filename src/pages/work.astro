@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import PageBanner from '../components/PageBanner.astro';
+import { caseStudies } from '../data/site';
+import { photos, casePhotos } from '../lib/photos';
+
+---
+<BaseLayout
+  title="Our Work"
+  description="Selected Davinci Systems projects — school ERP, eCommerce, billing platforms and operational workflow systems."
+>
+  <PageBanner
+    eyebrow="Our work"
+    title="Proven solutions. Real operational impact."
+    text="Each engagement is a path you can follow — from the first record to a platform the organisation can run."
+    image={photos.custom}
+  />
+  <section class="py-16 md:py-20">
+    <div class="container-site space-y-10">
+      {
+        caseStudies.map((study, i) => (
+          <article
+            id={study.slug}
+            class="scroll-mt-28 grid overflow-hidden rounded-2xl border border-line bg-white md:grid-cols-2"
+            data-reveal
+          >
+            <Image
+              src={photos[casePhotos[study.image] ?? 'caseSchool']}
+              alt={study.title}
+              class:list={['h-64 w-full object-cover md:h-full', i % 2 === 1 && 'md:order-2']}
+              widths={[720, 1080]}
+              sizes="(min-width: 768px) 50vw, 100vw"
+            />
+            <div class="flex flex-col justify-center p-8 md:p-10">
+              <p class="text-xs font-semibold tracking-[0.18em] text-gold uppercase">{study.industry}</p>
+              <h2 class="mt-2 text-2xl font-semibold text-navy">{study.title}</h2>
+              <p class="mt-2 text-sm font-medium text-gold">{study.process}</p>
+              <p class="mt-4 text-[15px] leading-relaxed text-muted">{study.summary}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+  <CtaBanner title="Have a similar problem to solve?" />
+</BaseLayout>
