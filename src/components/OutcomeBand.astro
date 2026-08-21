@@ -1,0 +1,37 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  before: string;
+  after: string;
+  outcomes: string[];
+}
+
+const { before, after, outcomes } = Astro.props;
+---
+<section class="py-16 md:py-20" data-reveal>
+  <div class="container-site">
+    <p class="text-xs font-semibold tracking-[0.22em] text-gold uppercase">What changes</p>
+    <h2 class="mt-3 text-3xl font-semibold tracking-tight text-navy md:text-4xl">After go-live.</h2>
+    <div class="mt-10 grid gap-6 md:grid-cols-2">
+      <article class="rounded-2xl border border-line bg-mist p-8">
+        <p class="text-xs font-semibold tracking-[0.16em] text-muted uppercase">Before</p>
+        <p class="mt-3 text-[15px] leading-relaxed text-navy">{before}</p>
+      </article>
+      <article class="rounded-2xl border border-gold/40 bg-navy p-8 text-white">
+        <p class="text-xs font-semibold tracking-[0.16em] text-gold uppercase">After</p>
+        <p class="mt-3 text-[15px] leading-relaxed text-white/90">{after}</p>
+      </article>
+    </div>
+    <ul class="stagger mt-8 grid gap-4 sm:grid-cols-3">
+      {
+        outcomes.map((outcome) => (
+          <li class="reveal flex items-start gap-3 rounded-xl border border-line bg-white px-5 py-4 text-sm text-navy">
+            <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+            {outcome}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

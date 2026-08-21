@@ -13,6 +13,15 @@ import heroCustom from '../assets/hero-custom.jpg';
 import heroEcommerce from '../assets/hero-ecommerce.jpg';
 import heroOdoo from '../assets/hero-odoo.jpg';
 import odooLaptop from '../assets/odoo-laptop.jpg';
+import sceneAi from '../assets/scene-ai.jpg';
+import sceneAutomation from '../assets/scene-automation.jpg';
+import sceneCustom from '../assets/scene-custom.jpg';
+import sceneEcommerce from '../assets/scene-ecommerce.jpg';
+import sceneEnterprise from '../assets/scene-enterprise.jpg';
+import sceneGis from '../assets/scene-gis.jpg';
+import sceneInvoicing from '../assets/scene-invoicing.jpg';
+import sceneOdoo from '../assets/scene-odoo.jpg';
+import sceneSchool from '../assets/scene-school.jpg';
 
 export const photos = {
   about: aboutOffice,
@@ -29,6 +38,15 @@ export const photos = {
   caseEcommerce,
   caseInvoicing,
   odooLaptop,
+  sceneAi,
+  sceneAutomation,
+  sceneCustom,
+  sceneEcommerce,
+  sceneEnterprise,
+  sceneGis,
+  sceneInvoicing,
+  sceneOdoo,
+  sceneSchool,
 } satisfies Record<string, ImageMetadata>;
 
 export type PhotoKey = keyof typeof photos;
@@ -43,6 +61,18 @@ export const solutionPhotos: Record<string, PhotoKey> = {
   enterprise: 'odooLaptop',
   ai: 'ai',
   gis: 'gis',
+};
+
+export const solutionScenes: Record<string, PhotoKey> = {
+  'odoo-erp': 'sceneOdoo',
+  'school-erp': 'sceneSchool',
+  ecommerce: 'sceneEcommerce',
+  'custom-apps': 'sceneCustom',
+  invoicing: 'sceneInvoicing',
+  automation: 'sceneAutomation',
+  enterprise: 'sceneEnterprise',
+  ai: 'sceneAi',
+  gis: 'sceneGis',
 };
 
 export const industryPhotos: Record<string, PhotoKey> = {
